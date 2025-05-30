@@ -1,0 +1,294 @@
+{
+  "name": "sherpa_onnx_asr_cpu_plugin",
+  "version": "1.0.0",
+  "description": "Sherpa-ONNX ASR Plugin supporting multiple model types",
+  "author": "OLV Team",
+  "service_type": "asr",
+  "package_manager": "uv",
+  "plugin_json_schema": {
+    "type": "object",
+    "title": "Sherpa-ONNX ASR Engine Configuration",
+    "properties": {
+      "model_type": {
+        "type": "string",
+        "title": "Model Type",
+        "enum": ["transducer", "paraformer", "nemo_ctc", "wenet_ctc", "whisper", "tdnn_ctc", "sense_voice"]
+      },
+      "encoder": {
+        "type": "string",
+        "title": "Encoder Model"
+      },
+      "decoder": {
+        "type": "string",
+        "title": "Decoder Model"
+      },
+      "joiner": {
+        "type": "string",
+        "title": "Joiner Model"
+      },
+      "paraformer": {
+        "type": "string",
+        "title": "Paraformer Model"
+      },
+      "nemo_ctc": {
+        "type": "string",
+        "title": "NeMo CTC Model"
+      },
+      "wenet_ctc": {
+        "type": "string",
+        "title": "WeNet CTC Model"
+      },
+      "tdnn_model": {
+        "type": "string",
+        "title": "TDNN Model"
+      },
+      "whisper_encoder": {
+        "type": "string",
+        "title": "Whisper Encoder"
+      },
+      "whisper_decoder": {
+        "type": "string",
+        "title": "Whisper Decoder"
+      },
+      "sense_voice": {
+        "type": "string",
+        "title": "SenseVoice Model"
+      },
+      "tokens": {
+        "type": "string",
+        "title": "Tokens File"
+      },
+      "hotwords_file": {
+        "type": "string",
+        "title": "Hotwords File"
+      },
+      "hotwords_score": {
+        "type": "number",
+        "title": "Hotwords Score"
+      },
+      "modeling_unit": {
+        "type": "string",
+        "title": "Modeling Unit"
+      },
+      "bpe_vocab": {
+        "type": "string",
+        "title": "BPE Vocabulary"
+      },
+      "num_threads": {
+        "type": "integer",
+        "title": "Number of Threads",
+        "minimum": 1,
+        "maximum": 32
+      },
+      "whisper_language": {
+        "type": "string",
+        "title": "Whisper Language"
+      },
+      "whisper_task": {
+        "type": "string",
+        "title": "Whisper Task",
+        "enum": ["transcribe", "translate"]
+      },
+      "whisper_tail_paddings": {
+        "type": "integer",
+        "title": "Whisper Tail Paddings"
+      },
+      "blank_penalty": {
+        "type": "number",
+        "title": "Blank Penalty"
+      },
+      "decoding_method": {
+        "type": "string",
+        "title": "Decoding Method",
+        "enum": ["greedy_search", "modified_beam_search"]
+      },
+      "debug": {
+        "type": "boolean",
+        "title": "Debug Mode"
+      },
+      "sample_rate": {
+        "type": "integer",
+        "title": "Sample Rate"
+      },
+      "feature_dim": {
+        "type": "integer",
+        "title": "Feature Dimension"
+      },
+      "use_itn": {
+        "type": "boolean",
+        "title": "Use ITN"
+      },
+      "provider": {
+        "type": "string",
+        "title": "ONNX Provider",
+        "enum": ["cpu", "cuda"]
+      }
+    },
+    "required": ["model_type", "tokens"],
+    "default": {
+      "model_type": "sense_voice",
+      "sense_voice": "./models/sherpa-onnx-sense-voice-zh-en-ja-ko-yue-2024-07-17/model.onnx",
+      "tokens": "./models/sherpa-onnx-sense-voice-zh-en-ja-ko-yue-2024-07-17/tokens.txt",
+      "provider": "cpu",
+      "num_threads": 4,
+      "debug": false,
+      "use_itn": true
+    }
+  },
+  "plugin_ui_schema": {
+    "ui:title": "Sherpa-ONNX ASR Engine Configuration",
+    "ui:description": "Configure the Sherpa-ONNX ASR engine settings for speech recognition",
+    "model_type": {
+      "ui:widget": "select",
+      "ui:title": "Model Type",
+      "ui:description": "Select the type of ASR model to use.",
+      "ui:help": "Different model types have different capabilities and performance characteristics."
+    },
+    "encoder": {
+      "ui:widget": "textarea",
+      "ui:title": "Encoder Model Path",
+      "ui:description": "Path to the encoder model file.",
+      "ui:placeholder": "e.g., /path/to/encoder.onnx"
+    },
+    "decoder": {
+      "ui:widget": "textarea",
+      "ui:title": "Decoder Model Path",
+      "ui:description": "Path to the decoder model file.",
+      "ui:placeholder": "e.g., /path/to/decoder.onnx"
+    },
+    "joiner": {
+      "ui:widget": "textarea",
+      "ui:title": "Joiner Model Path",
+      "ui:description": "Path to the joiner model file.",
+      "ui:placeholder": "e.g., /path/to/joiner.onnx"
+    },
+    "paraformer": {
+      "ui:widget": "textarea",
+      "ui:title": "Paraformer Model Path",
+      "ui:description": "Path to the Paraformer model file.",
+      "ui:placeholder": "e.g., /path/to/paraformer.onnx"
+    },
+    "nemo_ctc": {
+      "ui:widget": "textarea",
+      "ui:title": "NeMo CTC Model Path",
+      "ui:description": "Path to the NeMo CTC model file.",
+      "ui:placeholder": "e.g., /path/to/nemo_ctc.onnx"
+    },
+    "wenet_ctc": {
+      "ui:widget": "textarea",
+      "ui:title": "WeNet CTC Model Path",
+      "ui:description": "Path to the WeNet CTC model file.",
+      "ui:placeholder": "e.g., /path/to/wenet_ctc.onnx"
+    },
+    "tdnn_model": {
+      "ui:widget": "textarea",
+      "ui:title": "TDNN Model Path",
+      "ui:description": "Path to the TDNN model file.",
+      "ui:placeholder": "e.g., /path/to/tdnn.onnx"
+    },
+    "whisper_encoder": {
+      "ui:widget": "textarea",
+      "ui:title": "Whisper Encoder Path",
+      "ui:description": "Path to the Whisper encoder model file.",
+      "ui:placeholder": "e.g., /path/to/whisper_encoder.onnx"
+    },
+    "whisper_decoder": {
+      "ui:widget": "textarea",
+      "ui:title": "Whisper Decoder Path",
+      "ui:description": "Path to the Whisper decoder model file.",
+      "ui:placeholder": "e.g., /path/to/whisper_decoder.onnx"
+    },
+    "sense_voice": {
+      "ui:widget": "textarea",
+      "ui:title": "SenseVoice Model Path",
+      "ui:description": "Path to the SenseVoice model file.",
+      "ui:placeholder": "e.g., /path/to/sense_voice.onnx"
+    },
+    "tokens": {
+      "ui:widget": "textarea",
+      "ui:title": "Tokens File Path",
+      "ui:description": "Path to the tokens file containing vocabulary.",
+      "ui:placeholder": "e.g., /path/to/tokens.txt"
+    },
+    "hotwords_file": {
+      "ui:widget": "textarea",
+      "ui:title": "Hotwords File Path",
+      "ui:description": "Path to the hotwords file for custom vocabulary enhancement.",
+      "ui:placeholder": "e.g., /path/to/hotwords.txt"
+    },
+    "hotwords_score": {
+      "ui:widget": "updown",
+      "ui:title": "Hotwords Score",
+      "ui:description": "Score boost for hotwords recognition (higher values give more weight to hotwords)."
+    },
+    "modeling_unit": {
+      "ui:widget": "text",
+      "ui:title": "Modeling Unit",
+      "ui:description": "The modeling unit used by the model.",
+      "ui:placeholder": "e.g., bpe, char"
+    },
+    "bpe_vocab": {
+      "ui:widget": "textarea",
+      "ui:title": "BPE Vocabulary Path",
+      "ui:description": "Path to the BPE vocabulary file.",
+      "ui:placeholder": "e.g., /path/to/bpe.vocab"
+    },
+    "num_threads": {
+      "ui:widget": "range",
+      "ui:title": "Number of Threads",
+      "ui:description": "Number of CPU threads to use for inference."
+    },
+    "whisper_language": {
+      "ui:widget": "text",
+      "ui:title": "Whisper Language Code",
+      "ui:description": "Language code for Whisper model.",
+      "ui:placeholder": "e.g., en, zh, ja"
+    },
+    "whisper_task": {
+      "ui:widget": "radio",
+      "ui:title": "Whisper Task",
+      "ui:description": "Task for Whisper model to perform."
+    },
+    "whisper_tail_paddings": {
+      "ui:widget": "updown",
+      "ui:title": "Whisper Tail Paddings",
+      "ui:description": "Number of tail padding frames for Whisper model."
+    },
+    "blank_penalty": {
+      "ui:widget": "updown",
+      "ui:title": "Blank Penalty",
+      "ui:description": "Penalty score for blank tokens in decoding."
+    },
+    "decoding_method": {
+      "ui:widget": "radio",
+      "ui:title": "Decoding Method",
+      "ui:description": "Method used for decoding the model output."
+    },
+    "debug": {
+      "ui:widget": "checkbox",
+      "ui:title": "Debug Mode",
+      "ui:description": "Enable debug logging and verbose output."
+    },
+    "sample_rate": {
+      "ui:widget": "updown",
+      "ui:title": "Sample Rate (Hz)",
+      "ui:description": "Audio sample rate expected by the model.",
+      "ui:placeholder": "16000"
+    },
+    "feature_dim": {
+      "ui:widget": "updown",
+      "ui:title": "Feature Dimension",
+      "ui:description": "Dimension of the feature vectors."
+    },
+    "use_itn": {
+      "ui:widget": "checkbox",
+      "ui:title": "Use Inverse Text Normalization",
+      "ui:description": "Enable inverse text normalization to convert spoken numbers and dates to written form."
+    },
+    "provider": {
+      "ui:widget": "radio",
+      "ui:title": "ONNX Runtime Provider",
+      "ui:description": "Select the compute provider for ONNX Runtime."
+    }
+  }
+}

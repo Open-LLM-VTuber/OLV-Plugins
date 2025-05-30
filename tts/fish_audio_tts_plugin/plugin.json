@@ -1,0 +1,142 @@
+{
+  "name": "fish_audio_tts_plugin",
+  "version": "1.0.0",
+  "description": "Fish Audio TTS Plugin supporting both HTTP and WebSocket connections",
+  "author": "OLV Team",
+  "service_type": "tts",
+  "package_manager": "uv",
+  "plugin_json_schema": {
+    "type": "object",
+    "title": "Fish Audio TTS Engine Configuration",
+    "properties": {
+      "api_key": {
+        "type": "string",
+        "title": "API Key",
+        "description": "Fish Audio API key"
+      },
+      "base_url": {
+        "type": "string",
+        "title": "Base URL",
+        "default": "https://api.fish.audio"
+      },
+      "reference_id": {
+        "type": "string",
+        "title": "Reference ID",
+        "description": "Voice reference ID from Fish Audio"
+      },
+      "model": {
+        "type": "string",
+        "title": "TTS Model",
+        "enum": ["speech-1.5", "speech-1.6"],
+        "default": "speech-1.6"
+      },
+      "format": {
+        "type": "string",
+        "title": "Audio Format",
+        "enum": ["wav", "pcm", "mp3", "opus"],
+        "default": "mp3"
+      },
+      "mp3_bitrate": {
+        "type": "integer",
+        "title": "MP3 Bitrate",
+        "enum": [64, 128, 192],
+        "default": 128
+      },
+      "chunk_length": {
+        "type": "integer",
+        "title": "Chunk Length",
+        "minimum": 100,
+        "maximum": 300,
+        "default": 200
+      },
+      "normalize": {
+        "type": "boolean",
+        "title": "Normalize Text",
+        "description": "Normalize text for en & zh, increases stability for numbers",
+        "default": true
+      },
+      "latency": {
+        "type": "string",
+        "title": "Latency Mode",
+        "enum": ["normal", "balanced"],
+        "default": "balanced",
+        "description": "Balanced mode reduces latency to 300ms but may decrease stability"
+      },
+      "temperature": {
+        "type": "number",
+        "title": "Temperature",
+        "minimum": 0.0,
+        "maximum": 2.0,
+        "default": 0.7,
+        "description": "Controls randomness in speech generation"
+      },
+      "top_p": {
+        "type": "number",
+        "title": "Top P",
+        "minimum": 0.0,
+        "maximum": 1.0,
+        "default": 0.7,
+        "description": "Controls diversity via nucleus sampling"
+      },
+      "prosody": {
+        "type": "object",
+        "title": "Prosody Settings",
+        "properties": {
+          "speed": {
+            "type": "number",
+            "title": "Speech Speed",
+            "minimum": 0.5,
+            "maximum": 2.0,
+            "default": 1.0
+          },
+          "volume": {
+            "type": "number",
+            "title": "Volume Adjustment (dB)",
+            "default": 0
+          }
+        }
+      }
+    },
+    "required": ["api_key"],
+    "default": {
+      "api_key": "",
+      "base_url": "https://api.fish.audio",
+      "reference_id": "",
+      "model": "speech-1.6",
+      "format": "mp3",
+      "mp3_bitrate": 128,
+      "chunk_length": 200,
+      "normalize": true,
+      "latency": "balanced",
+      "temperature": 0.7,
+      "top_p": 0.7,
+      "prosody": {
+        "speed": 1.0,
+        "volume": 0
+      }
+    }
+  },
+  "plugin_ui_schema": {
+    "ui:title": "Fish Audio TTS Configuration",
+    "ui:description": "Configure Fish Audio TTS plugin settings",
+    "api_key": {
+      "ui:widget": "password",
+      "ui:placeholder": "Enter your Fish Audio API key"
+    },
+    "base_url": {
+      "ui:placeholder": "https://api.fish.audio"
+    },
+    "reference_id": {
+      "ui:placeholder": "Enter voice reference ID"
+    },
+    "prosody": {
+      "ui:title": "Prosody Control",
+      "speed": {
+        "ui:widget": "range"
+      },
+      "volume": {
+        "ui:widget": "updown"
+      }
+    }
+  }
+}
