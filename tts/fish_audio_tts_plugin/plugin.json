@@ -1,6 +1,6 @@
 {
   "name": "fish_audio_tts_plugin",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Fish Audio TTS Plugin supporting both HTTP and WebSocket connections",
   "author": "OLV Team",
   "service_type": "tts",
@@ -102,7 +102,6 @@
       "api_key": "",
       "base_url": "https://api.fish.audio",
       "reference_id": "",
-      "model": "speech-1.6",
       "format": "mp3",
       "mp3_bitrate": 128,
       "chunk_length": 200,
